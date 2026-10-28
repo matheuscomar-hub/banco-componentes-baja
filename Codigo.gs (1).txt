@@ -1,0 +1,100 @@
+const PLANILHA_ID = "1yMkDvncmDg-NxNdlO1v0FXz8FSvalUXVtsUhCpqS43Q";
+
+// Sem parâmetros, mantém a página original do Apps Script.
+// Com ?api=1, responde à pesquisa do site hospedado no GitHub Pages via JSONP.
+function doGet(e) {
+  const params = (e && e.parameter) ? e.parameter : {};
+
+  if (params.api === "1") {
+    const callback = String(params.callback || "");
+    // Aceita somente nomes de callback JavaScript simples para evitar injeção.
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(callback)) {
+      return ContentService.createTextOutput("Callback inválido")
+        .setMimeType(ContentService.MimeType.TEXT);
+    }
+
+    let resposta;
+    try {
+      resposta = buscarComponente(params.codigo || "");
+    } catch (erro) {
+      resposta = { erro: "Erro ao consultar a planilha. Tente novamente." };
+      console.error(erro);
+    }
+
+    const json = JSON.stringify(resposta).replace(/</g, "\\u003c");
+    return ContentService.createTextOutput(callback + "(" + json + ");")
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+
+  return HtmlService.createHtmlOutputFromFile("Index")
+    .setTitle("Banco de Componentes Baja SAE");
+}
+
+function buscarComponente(codigo) {
+  if (!codigo || !String(codigo).trim()) {
+    return { erro: "Digite o código de um componente." };
+  }
+
+  const ss = SpreadsheetApp.openById(PLANILHA_ID);
+  const abas = ss.getSheets();
+  const codigoBusca = normalizarCodigo(codigo);
+
+  const normalizarTexto = texto => String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+
+  for (const aba of abas) {
+    const intervalo = aba.getDataRange();
+    const dados = intervalo.getDisplayValues();
+    const links = intervalo.getRichTextValues();
+    const formulas = intervalo.getFormulas();
+    if (dados.length < 2) continue;
+
+    const cabecalhos = dados[0].map(normalizarTexto);
+    const colunaCodigo = cabecalhos.findIndex(c => c === "codigo");
+    if (colunaCodigo === -1) continue;
+    const colunaFoto = cabecalhos.findIndex(c => c === "foto (nome do arquivo ou link)");
+
+    for (let i = 1; i < dados.length; i++) {
+      if (normalizarCodigo(dados[i][colunaCodigo]) !== codigoBusca) continue;
+      const resultado = {};
+
+      cabecalhos.forEach((nome, j) => {
+        if (!nome) return;
+        if (j === colunaFoto) {
+          const textoCelula = dados[i][j];
+          const linkDireto = links[i][j] ? links[i][j].getLinkUrl() : null;
+          const formula = formulas[i][j] || "";
+          const linkFormula = formula.match(/(?:HYPERLINK|HIPERLINK)\s*\(\s*["']([^"']+)["']/i);
+          const url = linkDireto || (linkFormula ? linkFormula[1] : null) || textoCelula;
+          if (url) resultado[nome] = url;
+          return;
+        }
+        if (dados[i][j]) resultado[nome] = dados[i][j];
+      });
+
+      const permitidos = [
+        "codigo", "nome do componente", "subsistema", "material",
+        "fabricacao/aquisicao", "como funciona (breve descricao)",
+        "foto (nome do arquivo ou link)", "fornecedor/local de fabricacao",
+        "processo de fabricacao", "observacoes"
+      ];
+      const ficha = {};
+      for (const campo of permitidos) {
+        if (resultado[campo]) ficha[campo] = resultado[campo];
+      }
+      return { componente: ficha };
+    }
+  }
+  return { erro: "Componente não encontrado. Confira o código." };
+}
+
+function normalizarCodigo(valor) {
+  return String(valor || "")
+    .toUpperCase()
+    .replace(/\s+/g, "")
+    .replace(/-/g, "")
+    .trim();
+}

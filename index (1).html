@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Banco de Componentes | ProcoBaja</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #101012;
+      color: #f5f5f5;
+    }
+
+    header {
+      padding: 28px 8%;
+      background: #18181b;
+      border-bottom: 2px solid #d62835;
+    }
+
+    .logo {
+      display: block;
+      width: 100%;
+      max-width: 220px;
+      max-height: 150px;
+      object-fit: contain;
+      object-position: left center;
+      margin-bottom: 18px;
+    }
+
+    .marca {
+      color: #e63946;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    header h1 {
+      margin: 8px 0 0;
+      font-size: clamp(22px, 4vw, 30px);
+      color: #ffffff;
+    }
+
+    main {
+      width: min(760px, 90%);
+      margin: 65px auto;
+    }
+
+    .etiqueta {
+      color: #e63946;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    h2 {
+      font-size: clamp(28px, 5vw, 42px);
+      margin: 12px 0;
+      color: #ffffff;
+    }
+
+    .descricao {
+      color: #bdbdc2;
+      line-height: 1.7;
+    }
+
+    .busca {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    input {
+      min-width: 0;
+      flex: 1;
+      padding: 16px;
+      color: #ffffff;
+      background: #1c1c20;
+      border: 1px solid #48484f;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: #e63946;
+      box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+    }
+
+    button {
+      padding: 0 22px;
+      background: #d62835;
+      color: #ffffff;
+      border: 1px solid #d62835;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    button:hover:not(:disabled) {
+      background: #b91f2b;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #mensagem {
+      color: #c4c4ca;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+
+    #resultado {
+      margin-top: 24px;
+    }
+
+    .ficha {
+      padding: 24px;
+      background: #1a1a1e;
+      border: 1px solid #3a3a40;
+      border-top: 3px solid #d62835;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .ficha h3 {
+      margin-top: 0;
+      color: #ff4654;
+      font-size: 24px;
+      overflow-wrap: anywhere;
+    }
+
+    .campo {
+      padding: 13px 0;
+      border-bottom: 1px solid #34343a;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .campo:last-child {
+      border-bottom: 0;
+    }
+
+    .campo strong {
+      display: block;
+      color: #bdbdc5;
+      font-size: 12px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .foto-componente {
+      display: block;
+      width: 100%;
+      max-width: 650px;
+      max-height: 600px;
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+      margin: 14px auto 4px;
+      border-radius: 10px;
+      background: #101012;
+    }
+
+    .link-foto {
+      display: inline-block;
+      margin-top: 10px;
+      color: #ff4654;
+      overflow-wrap: anywhere;
+    }
+
+    .link-foto:hover {
+      color: #ffffff;
+    }
+
+    .aviso-foto {
+      color: #c4c4ca;
+      margin-top: 10px;
+    }
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: #85858e;
+      font-size: 12px;
+      border-top: 1px solid #29292e;
+    }
+
+    @media (max-width: 520px) {
+      header {
+        padding: 24px 5%;
+      }
+
+      .logo {
+        max-width: 175px;
+        max-height: 120px;
+        margin-bottom: 14px;
+      }
+
+      .busca {
+        flex-direction: column;
+      }
+
+      button {
+        padding: 15px;
+      }
+
+      main {
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
+
+      .ficha {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img
+    class="logo"
+    src="https://drive.google.com/thumbnail?id=1WLX2msIHtsdu4QLNkVirHZyYbFD5R7iW&sz=w500"
+    alt="Logo ProcoBaja"
+  >
+  <div class="marca">PROCOBAJA • UTFPR-CP</div>
+  <h1>Banco de Componentes</h1>
+</header>
+
+<main>
+  <div class="etiqueta">BASE DE DADOS TÉCNICA</div>
+
+  <h2>Encontre um componente.</h2>
+
+  <p class="descricao">
+    Consulte informações técnicas dos componentes do veículo Baja
+    por meio do código de identificação.
+  </p>
+
+  <form class="busca" id="formBusca">
+    <input
+      id="codigo"
+      type="text"
+      placeholder="Ex.: código do componente"
+      aria-label="Código do componente"
+      required
+    >
+    <button id="botao" type="submit">Pesquisar</button>
+  </form>
+
+  <div id="mensagem" role="status">
+    Digite o código de identificação para consultar a ficha técnica.
+  </div>
+
+  <div id="resultado"></div>
+</main>
+
+<footer>
+  ProcoBaja • Banco de dados técnico • Projeto Baja SAE
+</footer>
+
+<script>
+  const nomes = {
+    "código": "Código",
+    "codigo": "Código",
+    "nome do componente": "Componente",
+    "subsistema": "Subsistema",
+    "material": "Material",
+    "fabricação/aquisição": "Fabricação / Aquisição",
+    "fabricacao/aquisicao": "Fabricação / Aquisição",
+    "como funciona (breve descrição)": "Função",
+    "como funciona (breve descricao)": "Função",
+    "foto (nome do arquivo ou link)": "Foto",
+    "fornecedor/local de fabricação": "Fornecedor / Local",
+    "fornecedor/local de fabricacao": "Fornecedor / Local",
+    "processo de fabricação": "Processo de fabricação",
+    "processo de fabricacao": "Processo de fabricação",
+    "observações": "Observações",
+    "observacoes": "Observações"
+  };
+
+  document.getElementById("formBusca").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const codigo = document.getElementById("codigo").value.trim();
+    const mensagem = document.getElementById("mensagem");
+    const resultado = document.getElementById("resultado");
+    const botao = document.getElementById("botao");
+
+    resultado.replaceChildren();
+    mensagem.textContent = "Pesquisando componente...";
+    botao.disabled = true;
+
+    const callbackName = "bajaCallback_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+    const script = document.createElement("script");
+    const apiUrl = "https://script.google.com/macros/s/AKfycbyHd8Ux8hUCSF3LNt7UMf2WWZTTezUTpXpiqQzLs7gwpvHmss1AtuJgG__2ZURYYHmk8Q/exec";
+
+    window[callbackName] = function(resposta) {
+      delete window[callbackName];
+      script.remove();
+      botao.disabled = false;
+      resultado.replaceChildren();
+
+      if (!resposta || resposta.erro || !resposta.componente) {
+        mensagem.textContent =
+          (resposta && resposta.erro) || "Não foi possível consultar o componente.";
+        return;
+      }
+
+      const ficha = resposta.componente;
+      mensagem.textContent = "Componente encontrado.";
+
+      const cartao = document.createElement("section");
+      cartao.className = "ficha";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = ficha["nome do componente"] || "Ficha do componente";
+      cartao.appendChild(titulo);
+
+      Object.entries(ficha).forEach(function([chave, valor]) {
+        const linha = document.createElement("div");
+        linha.className = "campo";
+
+        const rotulo = document.createElement("strong");
+        rotulo.textContent = nomes[chave] || chave;
+        linha.appendChild(rotulo);
+
+        if (chave === "foto (nome do arquivo ou link)") {
+          const urlImagem = converterLinkGoogleDrive(valor);
+
+          if (urlImagem) {
+            const img = document.createElement("img");
+            img.className = "foto-componente";
+            img.alt = ficha["nome do componente"] || "Foto do componente";
+            img.loading = "lazy";
+            img.onerror = function() {
+              img.remove();
+              const aviso = document.createElement("p");
+              aviso.className = "aviso-foto";
+              aviso.textContent = "Não foi possível exibir a foto diretamente. Abra o arquivo pelo link abaixo.";
+              linha.appendChild(aviso);
+            };
+            img.src = urlImagem;
+            linha.appendChild(img);
+
+            const link = document.createElement("a");
+            link.className = "link-foto";
+            link.href = obterLinkParaAbrir(valor);
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Abrir foto em uma nova aba";
+            linha.appendChild(link);
+          } else {
+            const texto = document.createElement("span");
+            texto.textContent = "Foto não cadastrada.";
+            linha.appendChild(texto);
+          }
+        } else {
+          const texto = document.createElement("span");
+          texto.textContent = valor;
+          linha.appendChild(texto);
+        }
+        cartao.appendChild(linha);
+      });
+      resultado.appendChild(cartao);
+    };
+
+    script.onerror = function() {
+      delete window[callbackName];
+      script.remove();
+      botao.disabled = false;
+      mensagem.textContent = "Não foi possível conectar ao banco de dados. Tente novamente.";
+    };
+
+    script.src = apiUrl + "?api=1&codigo=" + encodeURIComponent(codigo) + "&callback=" + encodeURIComponent(callbackName);
+    document.body.appendChild(script);
+  });
+
+  function extrairIdGoogleDrive(url) {
+    const link = String(url || "").trim();
+
+    const padroes = [
+      /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
+      /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
+      /[?&]id=([a-zA-Z0-9_-]+)/
+    ];
+
+    for (const padrao of padroes) {
+      const match = link.match(padrao);
+      if (match) return match[1];
+    }
+
+    return null;
+  }
+
+  function converterLinkGoogleDrive(url) {
+    const link = String(url || "").trim();
+    if (!link) return "";
+
+    const id = extrairIdGoogleDrive(link);
+
+    if (id) {
+      return "https://drive.google.com/thumbnail?id=" +
+        encodeURIComponent(id) + "&sz=w1200";
+    }
+
+    if (/^https?:\/\//i.test(link)) {
+      return link;
+    }
+
+    return "";
+  }
+
+  function obterLinkParaAbrir(url) {
+    const link = String(url || "").trim();
+    const id = extrairIdGoogleDrive(link);
+
+    if (id) {
+      return "https://drive.google.com/file/d/" +
+        encodeURIComponent(id) + "/view";
+    }
+
+    return link;
+  }
+</script>
+
+</body>
+</html>
